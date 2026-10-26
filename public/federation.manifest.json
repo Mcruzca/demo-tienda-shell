@@ -1,0 +1,6 @@
+{
+  "compras": "https://demo-tienda-compras.vercel.app/remoteEntry.json",
+  "carrito": "https://carrito-vercel.vercel.app/remoteEntry.json",
+  "contador": "https://contador-vercel-eight.vercel.app/remoteEntry.json",
+  "pedidos": "https://pedidos-vercel.vercel.app/remoteEntry.json"
+}

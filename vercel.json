@@ -1,0 +1,52 @@
+{
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/shell/browser",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/remoteEntry.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/federation.manifest.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://demo-tienda-api.onrender.com/:path*"
+    },
+    {
+      "source": "/compras",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/carrito",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pedidos",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "compras": "https://OWNER.github.io/mf-tienda-compras/remoteEntry.json",
+  "carrito": "https://OWNER.github.io/mf-tienda-carrito/remoteEntry.json",
+  "contador": "https://OWNER.github.io/mf-tienda-contador/remoteEntry.json",
+  "pedidos": "https://OWNER.github.io/mf-tienda-pedidos/remoteEntry.json"
+}
