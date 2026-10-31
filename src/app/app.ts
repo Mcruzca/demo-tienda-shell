@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
+import { tiendaEstado } from './estado-tienda';
 
 // El shell arma la página: menú, cabecera y el apartado elegido.
 // No escucha ni reenvía los avisos entre módulos: los módulos se hablan solos.
@@ -12,13 +13,21 @@ import { loadRemoteModule } from '@angular-architects/native-federation';
    <nav><a routerLink="/compras" routerLinkActive="activo">Compras · Angular</a>
    <a routerLink="/carrito" routerLinkActive="activo">Carrito · JS</a>
    <a routerLink="/pedidos" routerLinkActive="activo">Pedidos · Angular</a></nav></div>
+   <span class="estado" title="Variables del shell">IGV {{ igv }} % · Descuento {{ descuento() }} %</span>
    @if (contador()) { <tienda-contador /> } @else { <span>{{ estadoContador() }}</span> }</header>
  <main><router-outlet /></main>`
 })
 export class App {
  contador = signal(false);
  estadoContador = signal('…');
+ // Variables del shell: el IGV es fijo; el descuento lo pueden cambiar los módulos.
+ igv = tiendaEstado.get('igv');
+ descuento = signal(tiendaEstado.get('descuento'));
  constructor() {
+   window.addEventListener('tienda:estado-cambio', e => {
+     const { clave, valor } = (e as CustomEvent).detail;
+     if (clave === 'descuento') this.descuento.set(valor);
+   });
    // El contador vive en la cabecera: está visible en todos los apartados.
    loadRemoteModule('contador', './Widget')
      .then(() => this.contador.set(true))

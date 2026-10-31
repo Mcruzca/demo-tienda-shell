@@ -5,3 +5,4 @@ nav { display:flex;gap:16px;flex-wrap:wrap; }
 nav a { color:#805100;font-weight:600;text-decoration:none;padding:4px 0; }
 nav a.activo { border-bottom:3px solid #805100; }
 main { margin-top:24px; }
+.estado { border:2px solid #805100;padding:6px 12px;border-radius:99px;font-weight:700;white-space:nowrap; }
