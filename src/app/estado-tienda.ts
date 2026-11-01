@@ -12,10 +12,23 @@ export const tiendaEstado = {
  get<K extends keyof EstadoTienda>(clave: K): EstadoTienda[K] { return valores[clave]; },
  set<K extends keyof EstadoTienda>(clave: K, valor: EstadoTienda[K]) {
    if (SOLO_LECTURA.includes(clave)) { console.warn(`"${clave}" es del shell: los módulos solo pueden leerla.`); return; }
+   if (clave === 'descuento' && !(typeof valor === 'number' && valor >= 0 && valor <= 100)) { console.warn(`Descuento inválido: ${valor}. Debe ser un número entre 0 y 100.`); return; }
    valores[clave] = valor;
    window.dispatchEvent(new CustomEvent('tienda:estado-cambio', { detail: { clave, valor } }));
- }
+ },
+ // Total final de cada pedido (con descuento e IGV). El shell lo guarda en localStorage;
+ // la API solo conoce el subtotal. Carrito lo guarda al finalizar y Pedidos lo lee.
+ guardarTotalPedido(id: number, total: number) {
+   const totales = leerTotales(); totales[id] = total;
+   try { localStorage.setItem(CLAVE_TOTALES, JSON.stringify(totales)); } catch {}
+ },
+ totalPedido(id: number): number | undefined { return leerTotales()[id]; }
 };
+
+const CLAVE_TOTALES = 'tienda:totales-pedidos';
+function leerTotales(): Record<number, number> {
+ try { return JSON.parse(localStorage.getItem(CLAVE_TOTALES) ?? '{}'); } catch { return {}; }
+}
 
 declare global { interface Window { tiendaEstado: typeof tiendaEstado; } }
 window.tiendaEstado = tiendaEstado; // Se publica antes de cargar cualquier módulo remoto.
